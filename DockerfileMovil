@@ -1,10 +1,6 @@
 FROM openjdk:19-sdk
 
-ENV USER="sipac"
-ENV LANG en_US.UTF-8
-ENV FLUTTER_HOME "/home/$USER/flutter"
-ENV FLUTTER_URL "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_2.10.5-stable.tar.xz"
-
+# Prerequisites
 RUN apt-get update;  \
     apt-get install -y --no-install-recommends \
               curl \
@@ -18,39 +14,29 @@ RUN apt-get update;  \
               xz-utils \
               lcov \
               git-crypt; \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/{apt,dpkg,cache,log}
 
-RUN useradd -ms /bin/bash $USER
-USER $USER
-WORKDIR /home/$USER
+# Set up new user
+RUN useradd -ms /bin/bash sipac
+USER sipac
+WORKDIR /home/sipac
 
-#TODO: terminar de ver bien lo del SDK de android
-# android sdk
-#RUN mkdir -p /home/$USER/Android/Sdk \
-#  && mkdir -p /home/$USER/.android \
-#  && touch /home/$USER/.android/repositories.cfg \
-#  && curl -o android_tools.zip https://dl.google.com/android/repository/platform-tools-latest-linux.zip \
-#  && unzip -qq -d "$ANDROID_SDK_ROOT" android_tools.zip \
-#  && rm android_tools.zip \
-#  && mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/tools \
-#  && mv $ANDROID_SDK_ROOT/cmdline-tools/bin $ANDROID_SDK_ROOT/cmdline-tools/tools \
-#  && mv $ANDROID_SDK_ROOT/cmdline-tools/lib $ANDROID_SDK_ROOT/cmdline-tools/tools \
-#  && yes "y" | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" \
-#  && yes "y" | sdkmanager "platforms;android-$ANDROID_VERSION" \
-#  && yes "y" | sdkmanager "platform-tools" \
-#  && yes "y" | sdkmanager "emulator" \
-#  && yes "y" | sdkmanager "system-images;android-$ANDROID_VERSION;google_apis_playstore;$ANDROID_ARCHITECTURE"
+# Prepare Android directories and system variables
+RUN mkdir -p Android/sdk
+ENV ANDROID_SDK_ROOT /home/sipac/Android/Sdk
+RUN mkdir -p .android && touch .android/repositories.cfg
 
-# flutter
-RUN mkdir -p $FLUTTER_HOME; \
-    curl -L ${FLUTTER_URL} -o /tmp/flutter.tar.xz --progress-bar; \
-    tar xf /tmp/flutter.tar.xz -C /tmp; \
-    mv /tmp/flutter/ -T ${FLUTTER_HOME}; \
-    rm -rf /tmp/flutter.tar.xz
+# Set up Android SDK
+RUN wget -O sdk-tools.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+RUN unzip sdk-tools.zip && rm sdk-tools.zip
+RUN mv tools Android/Sdk/tools
+RUN cd Android/Sdk/tools/bin && yes | ./sdkmanager --licenses
+RUN cd Android/Sdk/tools/bin && ./sdkmanager "build-tools;32.0.0" "patcher;v4" "platform-tools" "platforms;android-32" "sources;android-32"
+ENV PATH "$PATH:/home/sipac/Android/sdk/platform-tools"
 
-ENV PATH=$PATH:$FLUTTER_HOME/bin
-ENV PATH=$PATH:$FLUTTER_HOME/bin/cache/dart-sdk/bin
-ENV PATH=$PATH:$FLUTTER_HOME/.pub-cache/bin
+# Download Flutter SDK
+RUN git clone https://github.com/flutter/flutter.git
+ENV PATH "$PATH:/home/sipac/flutter/bin"
 
-RUN flutter doctor; \
-    chown -R $USER:$USER $FLUTTER_HOME
+# Run basic check to download Dark SDK
+RUN flutter doctor
