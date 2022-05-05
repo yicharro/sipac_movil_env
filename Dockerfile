@@ -1,8 +1,9 @@
-FROM openjdk
+FROM ubuntu:20.04
 
 # Prerequisites
 RUN apt-get update;  \
     apt-get install -y --no-install-recommends \
+              default-jdk \
               curl \
               git \
               lib32stdc++6 \
