@@ -14,13 +14,7 @@ RUN apt-get update;  \
               ca-certificates \
               xz-utils \
               lcov \
-              git-crypt \
-              clang  \
-              cmake  \
-              ninja-build  \
-              pkg-config  \
-              libgtk-3-dev  \
-              liblzma-dev; \
+              git-crypt; \
     rm -rf /var/lib/{apt,dpkg,cache,log}
 
 # Set up new user
