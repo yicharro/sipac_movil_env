@@ -1,4 +1,4 @@
-FROM openjdk:19-sdk
+FROM openjdk
 
 # Prerequisites
 RUN apt-get update;  \
@@ -40,3 +40,7 @@ ENV PATH "$PATH:/home/sipac/flutter/bin"
 
 # Run basic check to download Dark SDK
 RUN flutter doctor
+
+# Project
+RUN mkdir -p sipac_movil
+
