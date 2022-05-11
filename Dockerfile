@@ -43,8 +43,6 @@ COPY tools /opt/tools
 
 COPY licenses /opt/licenses
 
-RUN sdkmanager --list
-
 # Download Flutter SDK
 RUN git clone https://github.com/flutter/flutter.git -b stable
 ENV PATH "$PATH:/home/sipac/flutter/bin"
