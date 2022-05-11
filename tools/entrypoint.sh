@@ -5,7 +5,7 @@ function checkbin() {
 }
 
 function su_mt_user() {
-    su android -c '"$0" "$@"' -- "$@"
+    su sipac -c '"$0" "$@"' -- "$@"
 }
 
 chown sipac:sipac /home/sipac/android-sdk-linux

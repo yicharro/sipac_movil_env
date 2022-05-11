@@ -43,6 +43,10 @@ COPY tools /opt/tools
 
 COPY licenses /opt/licenses
 
+RUN /opt/tools/entrypoint.sh built-in
+
+CMD /opt/tools/entrypoint.sh built-in
+
 # Download Flutter SDK
 RUN git clone https://github.com/flutter/flutter.git
 ENV PATH "$PATH:/home/sipac/flutter/bin"
@@ -52,9 +56,7 @@ RUN flutter doctor
 
 WORKDIR /home/sipac/android-sdk-linux
 
-RUN /opt/tools/entrypoint.sh built-in
 
-CMD /opt/tools/entrypoint.sh built-in
 
 
 
