@@ -2,10 +2,10 @@ FROM ubuntu:20.04
 
 LABEL maintainer="SIPAC <sipac@uci.cu>"
 
-ENV ANDROID_SDK_HOME /opt/android-sdk-linux
-ENV ANDROID_SDK_ROOT /opt/android-sdk-linux
-ENV ANDROID_HOME /opt/android-sdk-linux
-ENV ANDROID_SDK /opt/android-sdk-linux
+ENV ANDROID_SDK_HOME /home/sipac/android-sdk-linux
+ENV ANDROID_SDK_ROOT /home/sipac/android-sdk-linux
+ENV ANDROID_HOME /home/sipac/android-sdk-linux
+ENV ANDROID_SDK /home/sipac/android-sdk-linux
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -44,6 +44,19 @@ WORKDIR /home/sipac/android-sdk-linux
 COPY tools /opt/tools
 
 COPY licenses /opt/licenses
+
+RUN sdkmanager --list
+
+# Download Flutter SDK
+RUN git clone https://github.com/flutter/flutter.git -b stable
+ENV PATH "$PATH:/home/sipac/flutter/bin"
+
+# Run basic check to download Dark SDK
+RUN flutter doctor
+
+RUN /opt/tools/entrypoint.sh built-in
+
+CMD /opt/tools/entrypoint.sh built-in
 
 
 
