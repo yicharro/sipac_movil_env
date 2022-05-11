@@ -37,7 +37,7 @@ ENV LANG en_US.UTF-8
 RUN useradd -ms /bin/bash sipac
 USER sipac
 RUN mkdir -p /home/sipac/android-sdk-linux
-WORKDIR /home/sipac/android-sdk-linux
+WORKDIR /home/sipac/
 
 COPY tools /opt/tools
 
@@ -49,6 +49,8 @@ ENV PATH "$PATH:/home/sipac/flutter/bin"
 
 # Run basic check to download Dark SDK
 RUN flutter doctor
+
+WORKDIR /home/sipac/android-sdk-linux
 
 RUN /opt/tools/entrypoint.sh built-in
 
