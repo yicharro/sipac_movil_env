@@ -44,7 +44,7 @@ COPY tools /opt/tools
 COPY licenses /opt/licenses
 
 # Download Flutter SDK
-RUN git clone https://github.com/flutter/flutter.git -b stable
+RUN git clone https://github.com/flutter/flutter.git
 ENV PATH "$PATH:/home/sipac/flutter/bin"
 
 # Run basic check to download Dark SDK
