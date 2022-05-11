@@ -36,7 +36,7 @@ ENV LANG en_US.UTF-8
 # Set up new user
 RUN useradd -ms /bin/bash sipac
 USER sipac
-RUN mkdir - p /home/sipac/android-sdk-linux
+RUN mkdir -p /home/sipac/android-sdk-linux
 WORKDIR /home/sipac/android-sdk-linux
 
 COPY tools /opt/tools
