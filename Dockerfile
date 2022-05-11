@@ -11,7 +11,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Install required tools
 # Dependencies to execute Android builds
-
 RUN dpkg --add-architecture i386 && apt-get update -yqq && apt-get install -y \
   curl \
   expect \
@@ -37,7 +36,7 @@ ENV LANG en_US.UTF-8
 # Set up new user
 RUN useradd -ms /bin/bash sipac
 USER sipac
-RUN mkdir - p android-sdk-linux
+RUN mkdir - p /home/sipac/android-sdk-linux
 WORKDIR /home/sipac/android-sdk-linux
 
 COPY tools /opt/tools
