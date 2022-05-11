@@ -1,8 +1,8 @@
 #!/bin/bash
 
-mkdir -p /opt/android-sdk-linux/bin/
-cp /opt/tools/android-env.sh /opt/android-sdk-linux/bin/
-source /opt/android-sdk-linux/bin/android-env.sh
+mkdir -p /home/sipac/android-sdk-linux/bin/
+cp /opt/tools/android-env.sh /home/sipac/android-sdk-linux/android-sdk-linux/bin/
+source /home/sipac/android-sdk-linux/bin/android-env.sh
 
 built_in_sdk=1
 
